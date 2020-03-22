@@ -20,6 +20,16 @@ int main() {
     Message message(messageFromFile);
     Coder coder(message);
     std::cout<<coder.getCodedMessage();
+    std::ofstream outfile ("../../dataset/kod.txt");
+    for(const auto &word : coder.code())
+    {
+      for(const auto &bit : word)
+      {
+        outfile << bit;
+      }
+      outfile << endl;
+    }
+    outfile.close();
     auto kodzik = coder.code();
     kodzik[0][6] = !kodzik[0][6];
     kodzik[0][7] = !kodzik[0][7];
