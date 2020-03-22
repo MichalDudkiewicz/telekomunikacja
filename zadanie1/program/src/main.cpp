@@ -4,12 +4,20 @@
 #include <iostream>
 #include "decoder.h"
 #include <vector>
+#include <fstream>
 
 using namespace std;
 
 int main() {
-    cout << "kot" << endl;
-    Message message("kot");
+    ifstream myfile;
+    string messageFromFile;
+    myfile.open("../../dataset/wiadomosc.txt");
+    if (myfile.is_open())
+    {
+      getline (myfile,messageFromFile);
+      myfile.close();
+    }
+    Message message(messageFromFile);
     Coder coder(message);
     std::cout<<coder.getCodedMessage();
     auto kodzik = coder.code();
