@@ -4,6 +4,7 @@
 #include <iostream>
 #include "decoder.h"
 #include <vector>
+#include <boost/lexical_cast.hpp>
 #include <fstream>
 
 using namespace std;
@@ -30,10 +31,26 @@ int main() {
       outfile << endl;
     }
     outfile.close();
-    auto kodzik = coder.code();
-    kodzik[0][6] = !kodzik[0][6];
-    kodzik[0][7] = !kodzik[0][7];
-    Receiver receiver(kodzik);
+    std::ifstream infile ("../../dataset/kod.txt");
+    string word;
+    std::vector<std::vector<bool>> codeFromFile;
+    codeFromFile.reserve(coder.code().size());
+    while(!infile.eof())
+    {
+      getline(infile,word);
+      if(word.length() > 0)
+      {
+        codeFromFile.emplace_back();
+        std::bitset<16> bits(word);
+        for(int i = 15; i >= 0; --i)
+        {
+          codeFromFile.back().push_back(bits[i]);
+        }
+      }
+    }
+    infile.close();
+
+    Receiver receiver(codeFromFile);
     std::cout << endl << receiver.checkCorrectness();
     std::cout<<endl<<receiver.getCode();
     receiver.fixErrors();
