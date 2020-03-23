@@ -4,7 +4,7 @@ project(Library)
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 set(SOURCE_FILES
-        src/message.cpp include/message.h src/coder.cpp include/coder.h src/receiver.cpp include/receiver.h src/decoder.cpp include/decoder.h)
+        src/message.cpp include/message.h src/coder.cpp include/coder.h src/receiver.cpp include/receiver.h src/decoder.cpp include/decoder.h include/matrixH.h)
 
 add_library(Library ${SOURCE_FILES})
 
