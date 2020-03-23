@@ -1,0 +1,10 @@
+Program przedstawia M wiadomości (8-bitowych) w postaci M słów kodowych. 
+Wybrane słowa kodowe umożliwiają wykrywanie oraz korekcję do maksymalnie 2 błędów transmisji w każdym ze słów. 
+Jest to możliwe dzięki odpowiedniemu dobraniu macierzy H, tak aby żadna z jej kolumn nie była sumą dwóch innych, 
+każda kolumna jest unikalna i niezerowa. Ponadto słowa należy tworzyć tak, aby minimalna odległość między nimi wynosiła 5. 
+
+Program działa w dwóch trybach: 
+1. Kodowanie wiadomości z pliku tekstowego do innego pliku tekstowego 
+2. Odkodowanie wiadomości z pliku tekstowego i wypisanie na ekran 
+
+Dzięki temu pomiędzy pierwszym a drugim trybem działania programu można zasymulować powstanie błędu transmisji. 
