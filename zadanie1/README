@@ -1,3 +1,5 @@
+<b>Kody wykrywające i korygujące błędy transmisji</b>
+
 Program przedstawia M wiadomości (8-bitowych) w postaci M słów kodowych. 
 Wybrane słowa kodowe umożliwiają wykrywanie oraz korekcję do maksymalnie 2 błędów transmisji w każdym ze słów. 
 Jest to możliwe dzięki odpowiedniemu dobraniu macierzy H, tak aby żadna z jej kolumn nie była sumą dwóch innych, 
