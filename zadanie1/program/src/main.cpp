@@ -4,59 +4,75 @@
 #include <iostream>
 #include "decoder.h"
 #include <vector>
-#include <boost/lexical_cast.hpp>
 #include <fstream>
 
 using namespace std;
 
 int main() {
-    ifstream myfile;
-    string messageFromFile;
-    myfile.open("../../dataset/wiadomosc.txt");
-    if (myfile.is_open())
+    cout << "MENU: \n"
+            "1. zakoduj wiaodmosc z pliku wiadomosc.txt\n"
+            "2. odkoduj wiadomosc z pliku kod.txt w konsoli\n";
+    int choice;
+    cin >> choice;
+    if(choice == 1)
     {
-      getline (myfile,messageFromFile);
-      myfile.close();
-    }
-    Message message(messageFromFile);
-    Coder coder(message);
-    std::cout<<coder.getCodedMessage();
-    std::ofstream outfile ("../../dataset/kod.txt");
-    for(const auto &word : coder.code())
-    {
-      for(const auto &bit : word)
+      ifstream myfile;
+      string messageFromFile;
+      myfile.open("../../dataset/wiadomosc.txt");
+      if (myfile.is_open())
       {
-        outfile << bit;
+        getline (myfile,messageFromFile);
+        myfile.close();
       }
-      outfile << endl;
-    }
-    outfile.close();
-    std::ifstream infile ("../../dataset/kod.txt");
-    string word;
-    std::vector<std::vector<bool>> codeFromFile;
-    codeFromFile.reserve(coder.code().size());
-    while(!infile.eof())
-    {
-      getline(infile,word);
-      if(word.length() > 0)
+      Message message(messageFromFile);
+      Coder coder(message);
+      std::ofstream outfile ("../../dataset/kod.txt");
+      for(const auto &word : coder.code())
       {
-        codeFromFile.emplace_back();
-        std::bitset<16> bits(word);
-        for(int i = 15; i >= 0; --i)
+        for(const auto &bit : word)
         {
-          codeFromFile.back().push_back(bits[i]);
+          outfile << bit;
+        }
+        outfile << endl;
+      }
+      outfile.close();
+      std::cout<<"wiadomosc: " + message.getMessage();
+      std::cout<< "\nzakodowana wiadomosc: " + coder.getCodedMessage() + "\nzapisano do pliku kod.txt";
+    }
+    else if(choice == 2)
+    {
+      std::ifstream infile ("../../dataset/kod.txt");
+      string word;
+      std::vector<std::vector<bool>> codeFromFile;
+      while(!infile.eof())
+      {
+        getline(infile,word);
+        if(word.length() > 0)
+        {
+          codeFromFile.emplace_back();
+          std::bitset<16> bits(word);
+          for(int i = 15; i >= 0; --i)
+          {
+            codeFromFile.back().push_back(bits[i]);
+          }
         }
       }
-    }
-    infile.close();
+      infile.close();
 
-    Receiver receiver(codeFromFile);
-    std::cout << endl << receiver.checkCorrectness();
-    std::cout<<endl<<receiver.getCode();
-    receiver.fixErrors();
-    std::cout<<endl<<receiver.getCode();
-    Decoder decoder(receiver.getCodedMessage());
-    std::cout << endl << decoder.getCode();
-    std::cout<< endl<< decoder.decode();
+      Receiver receiver(codeFromFile);
+      std::cout<<"\nzakodowana wiadomosc otrzymana: " + receiver.getCode();
+      std::cout<<"\npoprawnosc slow kodowych: ";
+      std::cout << std::boolalpha;
+      std::cout << receiver.checkCorrectness();
+      if(!receiver.checkCorrectness())
+      {
+        receiver.fixErrors();
+        std::cout<<"\nwiadomosc poprawiona: "<<receiver.getCode();
+      }
+      Decoder decoder(receiver.getCodedMessage());
+      std::cout<< "\nodkodowana wiadomosc: " + decoder.decode();
+    }
+    else
+      return 0;
     return 0;
 }
